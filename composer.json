@@ -1,0 +1,20 @@
+{
+    "name": "bayne/telegram-bot-api",
+    "description": "A telegram bot api client that is generated from the telegram schema",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Brian Payne",
+            "email": "bpayne@uci.edu"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bayne\\": "Bayne"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/serializer": "^3.3"
+    }
+}
