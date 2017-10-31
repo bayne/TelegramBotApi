@@ -128,7 +128,7 @@ class Message extends Object\AbstractObject
     *
     * Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     *
-    * @var Object\MessageEntity[]
+    * @var Object\MessageEntity[]|array
     */
    protected $entities;
 
@@ -137,7 +137,7 @@ class Message extends Object\AbstractObject
     *
     * Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
     *
-    * @var Object\MessageEntity[]
+    * @var Object\MessageEntity[]|array
     */
    protected $captionEntities;
 
@@ -173,7 +173,7 @@ class Message extends Object\AbstractObject
     *
     * Optional. Message is a photo, available sizes of the photo
     *
-    * @var Object\PhotoSize[]
+    * @var Object\PhotoSize[]|array
     */
    protected $photo;
 
@@ -254,7 +254,7 @@ class Message extends Object\AbstractObject
     *
     * Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     *
-    * @var Object\User[]
+    * @var Object\User[]|array
     */
    protected $newChatMembers;
 
@@ -281,7 +281,7 @@ class Message extends Object\AbstractObject
     *
     * Optional. A chat photo was change to this value
     *
-    * @var Object\PhotoSize[]
+    * @var Object\PhotoSize[]|array
     */
    protected $newChatPhoto;
 
@@ -602,7 +602,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @param Object\MessageEntity[] $entities
+    * @param Object\MessageEntity[]|array $entities
     * @return Message
     */
    public function setEntities($entities)
@@ -612,7 +612,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @return Object\MessageEntity[]
+    * @return Object\MessageEntity[]|array
     */
    public function getEntities()
    {
@@ -620,7 +620,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @param Object\MessageEntity[] $captionEntities
+    * @param Object\MessageEntity[]|array $captionEntities
     * @return Message
     */
    public function setCaptionEntities($captionEntities)
@@ -630,7 +630,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @return Object\MessageEntity[]
+    * @return Object\MessageEntity[]|array
     */
    public function getCaptionEntities()
    {
@@ -692,7 +692,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @param Object\PhotoSize[] $photo
+    * @param Object\PhotoSize[]|array $photo
     * @return Message
     */
    public function setPhoto($photo)
@@ -702,7 +702,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @return Object\PhotoSize[]
+    * @return Object\PhotoSize[]|array
     */
    public function getPhoto()
    {
@@ -854,7 +854,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @param Object\User[] $newChatMembers
+    * @param Object\User[]|array $newChatMembers
     * @return Message
     */
    public function setNewChatMembers($newChatMembers)
@@ -864,7 +864,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @return Object\User[]
+    * @return Object\User[]|array
     */
    public function getNewChatMembers()
    {
@@ -908,7 +908,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @param Object\PhotoSize[] $newChatPhoto
+    * @param Object\PhotoSize[]|array $newChatPhoto
     * @return Message
     */
    public function setNewChatPhoto($newChatPhoto)
@@ -918,7 +918,7 @@ class Message extends Object\AbstractObject
    }
 
    /**
-    * @return Object\PhotoSize[]
+    * @return Object\PhotoSize[]|array
     */
    public function getNewChatPhoto()
    {

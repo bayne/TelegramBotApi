@@ -26,7 +26,7 @@ interface ClientInterface {
      *        Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling 
      * should be used for testing purposes only. 
      *
-     * @param string[] $allowedUpdates
+     * @param string[]|array $allowedUpdates
      *        List the types of updates you want your bot to receive. For example, specify [“message”, 
      * “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available 
      * update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the 
@@ -62,7 +62,7 @@ interface ClientInterface {
      * to 40. Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s 
      * throughput. 
      *
-     * @param string[] $allowedUpdates
+     * @param string[]|array $allowedUpdates
      *        List the types of updates you want your bot to receive. For example, specify [“message”, 
      * “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available 
      * update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the 
@@ -1412,7 +1412,7 @@ interface ClientInterface {
      * @param string $inlineQueryId
      *        Unique identifier for the answered query 
      *
-     * @param Object\AbstractInlineQueryResult[] $results
+     * @param Object\AbstractInlineQueryResult[]|array $results
      *        A JSON-serialized array of results for the inline query 
      *
      * @param int $cacheTime
@@ -1477,7 +1477,7 @@ interface ClientInterface {
      * @param string $currency
      *        Three-letter ISO 4217 currency code, see more on currencies 
      *
-     * @param Object\LabeledPrice[] $prices
+     * @param Object\LabeledPrice[]|array $prices
      *        Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, 
      * etc.) 
      *
@@ -1561,7 +1561,7 @@ interface ClientInterface {
      *        Specify True if delivery to the specified address is possible and False if there are any problems (for example, 
      * if delivery to the specified address is not possible) 
      *
-     * @param Object\ShippingOption[] $shippingOptions
+     * @param Object\ShippingOption[]|array $shippingOptions
      *        Required if ok is True. A JSON-serialized array of available shipping options. 
      *
      * @param string $errorMessage

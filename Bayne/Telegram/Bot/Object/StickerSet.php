@@ -38,7 +38,7 @@ class StickerSet extends Object\AbstractObject
     *
     * List of all set stickers
     *
-    * @var Object\Sticker[]
+    * @var Object\Sticker[]|array
     */
    protected $stickers;
 
@@ -98,7 +98,7 @@ class StickerSet extends Object\AbstractObject
    }
 
    /**
-    * @param Object\Sticker[] $stickers
+    * @param Object\Sticker[]|array $stickers
     * @return StickerSet
     */
    public function setStickers($stickers)
@@ -108,7 +108,7 @@ class StickerSet extends Object\AbstractObject
    }
 
    /**
-    * @return Object\Sticker[]
+    * @return Object\Sticker[]|array
     */
    public function getStickers()
    {

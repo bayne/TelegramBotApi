@@ -29,7 +29,7 @@ class Game extends Object\AbstractObject
     *
     * Photo that will be displayed in the game message in chats.
     *
-    * @var Object\PhotoSize[]
+    * @var Object\PhotoSize[]|array
     */
    protected $photo;
 
@@ -47,7 +47,7 @@ class Game extends Object\AbstractObject
     *
     * Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
     *
-    * @var Object\MessageEntity[]
+    * @var Object\MessageEntity[]|array
     */
    protected $textEntities;
 
@@ -98,7 +98,7 @@ class Game extends Object\AbstractObject
    }
 
    /**
-    * @param Object\PhotoSize[] $photo
+    * @param Object\PhotoSize[]|array $photo
     * @return Game
     */
    public function setPhoto($photo)
@@ -108,7 +108,7 @@ class Game extends Object\AbstractObject
    }
 
    /**
-    * @return Object\PhotoSize[]
+    * @return Object\PhotoSize[]|array
     */
    public function getPhoto()
    {
@@ -134,7 +134,7 @@ class Game extends Object\AbstractObject
    }
 
    /**
-    * @param Object\MessageEntity[] $textEntities
+    * @param Object\MessageEntity[]|array $textEntities
     * @return Game
     */
    public function setTextEntities($textEntities)
@@ -144,7 +144,7 @@ class Game extends Object\AbstractObject
    }
 
    /**
-    * @return Object\MessageEntity[]
+    * @return Object\MessageEntity[]|array
     */
    public function getTextEntities()
    {

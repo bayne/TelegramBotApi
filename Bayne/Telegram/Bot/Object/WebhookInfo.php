@@ -65,7 +65,7 @@ class WebhookInfo extends Object\AbstractObject
     *
     * Optional. A list of update types the bot is subscribed to. Defaults to all update types
     *
-    * @var string[]
+    * @var string[]|array
     */
    protected $allowedUpdates;
 
@@ -179,7 +179,7 @@ class WebhookInfo extends Object\AbstractObject
    }
 
    /**
-    * @param string[] $allowedUpdates
+    * @param string[]|array $allowedUpdates
     * @return WebhookInfo
     */
    public function setAllowedUpdates($allowedUpdates)
@@ -189,7 +189,7 @@ class WebhookInfo extends Object\AbstractObject
    }
 
    /**
-    * @return string[]
+    * @return string[]|array
     */
    public function getAllowedUpdates()
    {

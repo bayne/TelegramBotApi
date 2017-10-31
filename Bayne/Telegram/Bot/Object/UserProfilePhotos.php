@@ -20,7 +20,7 @@ class UserProfilePhotos extends Object\AbstractObject
     *
     * Requested profile pictures (in up to 4 sizes each)
     *
-    * @var array[]
+    * @var array[]|array
     */
    protected $photos;
 
@@ -44,7 +44,7 @@ class UserProfilePhotos extends Object\AbstractObject
    }
 
    /**
-    * @param array[] $photos
+    * @param array[]|array $photos
     * @return UserProfilePhotos
     */
    public function setPhotos($photos)
@@ -54,7 +54,7 @@ class UserProfilePhotos extends Object\AbstractObject
    }
 
    /**
-    * @return array[]
+    * @return array[]|array
     */
    public function getPhotos()
    {

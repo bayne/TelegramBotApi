@@ -11,13 +11,13 @@ class InlineKeyboardMarkup extends Object\AbstractObject
     *
     * Array of button rows, each represented by an Array of InlineKeyboardButton objects
     *
-    * @var array[]
+    * @var array[]|array
     */
    protected $inlineKeyboard;
 
 
    /**
-    * @param array[] $inlineKeyboard
+    * @param array[]|array $inlineKeyboard
     * @return InlineKeyboardMarkup
     */
    public function setInlineKeyboard($inlineKeyboard)
@@ -27,7 +27,7 @@ class InlineKeyboardMarkup extends Object\AbstractObject
    }
 
    /**
-    * @return array[]
+    * @return array[]|array
     */
    public function getInlineKeyboard()
    {

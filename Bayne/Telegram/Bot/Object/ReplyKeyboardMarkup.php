@@ -11,7 +11,7 @@ class ReplyKeyboardMarkup extends Object\AbstractObject
     *
     * Array of button rows, each represented by an Array of KeyboardButton objects
     *
-    * @var array[]
+    * @var array[]|array
     */
    protected $keyboard;
 
@@ -44,7 +44,7 @@ class ReplyKeyboardMarkup extends Object\AbstractObject
 
 
    /**
-    * @param array[] $keyboard
+    * @param array[]|array $keyboard
     * @return ReplyKeyboardMarkup
     */
    public function setKeyboard($keyboard)
@@ -54,7 +54,7 @@ class ReplyKeyboardMarkup extends Object\AbstractObject
    }
 
    /**
-    * @return array[]
+    * @return array[]|array
     */
    public function getKeyboard()
    {

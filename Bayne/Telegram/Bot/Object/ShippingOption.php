@@ -29,7 +29,7 @@ class ShippingOption extends Object\AbstractObject
     *
     * List of price portions
     *
-    * @var Object\LabeledPrice[]
+    * @var Object\LabeledPrice[]|array
     */
    protected $prices;
 
@@ -71,7 +71,7 @@ class ShippingOption extends Object\AbstractObject
    }
 
    /**
-    * @param Object\LabeledPrice[] $prices
+    * @param Object\LabeledPrice[]|array $prices
     * @return ShippingOption
     */
    public function setPrices($prices)
@@ -81,7 +81,7 @@ class ShippingOption extends Object\AbstractObject
    }
 
    /**
-    * @return Object\LabeledPrice[]
+    * @return Object\LabeledPrice[]|array
     */
    public function getPrices()
    {
