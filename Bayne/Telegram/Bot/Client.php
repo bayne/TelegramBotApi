@@ -3,6 +3,10 @@
 namespace Bayne\Telegram\Bot;
 
 use Bayne\Serializer\Normalizer\GetSetExcludeNormalizer;
+use Bayne\Telegram\Bot\Type\AbstractInlineQueryResult;
+use Bayne\Telegram\Bot\Type\AbstractInputMessageContent;
+use Bayne\Telegram\Bot\Type\AbstractType;
+use Bayne\Telegram\Bot\Type\InputFileInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
@@ -81,7 +85,7 @@ class Client implements ClientInterface
                 $updatedParameters[$name] = $this->serializer->serialize($value, 'json');
             } elseif ($value instanceof AbstractInputMessageContent) {
                 $updatedParameters[$name] = $this->serializer->serialize($value, 'json');
-            } elseif ($value instanceof AbstractObject) {
+            } elseif ($value instanceof AbstractType) {
                 $updatedParameters[$name] = $this->serializer->serialize($value, 'json');
             } else {
                 $updatedParameters[$name] = $value;
