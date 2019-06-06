@@ -62,13 +62,7 @@ class Client implements ClientInterface
         );
     }
 
-    /**
-     * @param string $methodName
-     * @param array $parameters
-     *
-     * @return ResponseInterface
-     */
-    protected function callMethod($methodName, $parameters)
+    protected function getParameters($methodName, $parameters)
     {
         $reflection = new \ReflectionMethod(self::class, $methodName);
         $reflectionParameters = $reflection->getParameters();
@@ -94,11 +88,23 @@ class Client implements ClientInterface
             }
         }
 
+        return $updatedParameters;
+    }
+
+
+    /**
+     * @param string $methodName
+     * @param array $parameters
+     *
+     * @return ResponseInterface
+     */
+    protected function callMethod($methodName, $parameters)
+    {
         return $this->client->request(
             'post',
             $this->baseUrl.'/bot'.$this->token.'/'.$methodName,
             [
-                'form_params' => $updatedParameters
+                'form_params' => $this->getParameters($methodName, $parameters)
             ]
         );
     }
