@@ -114,9 +114,16 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getupdates
      *
      * Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+     *
+     * @param int $offset
+     *        Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of
+     * previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update
+     * is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative
+     * offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All
+     * previous updates will forgotten.
      *
      * @param int $limit
      *        Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
@@ -135,6 +142,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function getUpdates(
+        $offset = null,
         $limit = null,
         $timeout = null,
         array $allowedUpdates = null
@@ -151,6 +159,9 @@ class Client implements ClientInterface
      * pretty sure it’s us. Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there
      * is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on
      * success.
+     *
+     * @param string $url
+     *        HTTPS url to send updates to. Use an empty string to remove webhook integration
      *
      * @param Type\InputFileInterface $certificate
      *        Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide
@@ -171,6 +182,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setWebhook(
+        $url,
         Type\InputFileInterface $certificate = null,
         $maxConnections = null,
         array $allowedUpdates = null
@@ -180,9 +192,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendmessage
      *
      * Use this method to send text messages. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param string $text
      *        Text of the message to be sent
@@ -207,6 +222,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendMessage(
+        $chatId,
         $text,
         $parseMode = null,
         $disableWebPagePreview = null,
@@ -219,9 +235,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#forwardmessage
      *
      * Use this method to forward messages of any kind. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param int|string $fromChatId
      *        Unique identifier for the chat where the original message was sent (or channel username in the format
@@ -236,6 +255,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function forwardMessage(
+        $chatId,
         $fromChatId,
         $messageId,
         $disableNotification = null
@@ -245,9 +265,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendphoto
      *
      * Use this method to send photos. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $photo
      *        Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an
@@ -274,6 +297,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendPhoto(
+        $chatId,
         $photo,
         $caption = null,
         $parseMode = null,
@@ -286,12 +310,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendaudio
      *
      * For sending voice messages, use the sendVoice method instead. Use this method to send
      * audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On
      * success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this
      * limit may be changed in the future.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $audio
      *        Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers
@@ -334,6 +361,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendAudio(
+        $chatId,
         $audio,
         $caption = null,
         $parseMode = null,
@@ -350,10 +378,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#senddocument
      *
      * Use this method to send general files. On success, the sent Message is returned. Bots can
      * currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $document
      *        File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an
@@ -387,6 +418,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendDocument(
+        $chatId,
         $document,
         $thumb = null,
         $caption = null,
@@ -400,10 +432,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendvideo
      *
      * Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB
      * in size, this limit may be changed in the future.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $video
      *        Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an
@@ -449,6 +484,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendVideo(
+        $chatId,
         $video,
         $duration = null,
         $width = null,
@@ -466,9 +502,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendanimation
      *
      * Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $animation
      *        Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers
@@ -511,6 +550,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendAnimation(
+        $chatId,
         $animation,
         $duration = null,
         $width = null,
@@ -527,12 +567,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendvoice
      *
      * Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For
      * this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio
      * or Document). On success, the sent Message is returned. Bots can
      * currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $voice
      *        Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended),
@@ -562,6 +605,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendVoice(
+        $chatId,
         $voice,
         $caption = null,
         $parseMode = null,
@@ -575,10 +619,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendvideonote
      *
      * As of v.4.0, Telegram clients
      * support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $videoNote
      *        Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers
@@ -611,6 +658,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendVideoNote(
+        $chatId,
         $videoNote,
         $duration = null,
         $length = null,
@@ -624,9 +672,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendmediagroup
      *
      * Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputMediaPhoto and InputMediaVideo[]|array $media
      *        A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
@@ -640,6 +691,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendMediaGroup(
+        $chatId,
         array $media,
         $disableNotification = null,
         $replyToMessageId = null
@@ -649,9 +701,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendlocation
      *
      * Use this method to send point on the map. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param float $latitude
      *        Latitude of the location
@@ -675,6 +730,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendLocation(
+        $chatId,
         $latitude,
         $longitude,
         $livePeriod = null,
@@ -687,12 +743,16 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#editmessagelivelocation
      *
      * Use this method to edit live location messages. A location can be edited until its live_period expires or
      * editing is explicitly disabled by a call to stopMessageLiveLocation. On
      * success, if the edited message was sent by the bot, the edited Message is returned, otherwise
      * True is returned.
+     *
+     * @param int|string $chatId
+     *        Required if inline_message_id is not specified. Unique identifier for the target chat or username of the
+     * target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Required if inline_message_id is not specified. Identifier of the message to edit
@@ -712,6 +772,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function editMessageLiveLocation(
+        $chatId,
         $messageId,
         $inlineMessageId,
         $latitude,
@@ -723,10 +784,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#stopmessagelivelocation
      *
      * Use this method to stop updating a live location message before live_period expires. On success, if the
      * message was sent by the bot, the sent Message is returned, otherwise True is returned.
+     *
+     * @param int|string $chatId
+     *        Required if inline_message_id is not specified. Unique identifier for the target chat or username of the
+     * target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Required if inline_message_id is not specified. Identifier of the message with live location to stop
@@ -740,6 +805,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function stopMessageLiveLocation(
+        $chatId,
         $messageId,
         $inlineMessageId,
         Type\InlineKeyboardMarkup $replyMarkup = null
@@ -749,10 +815,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendvenue
      *
      * Use this method to send information about a venue. On success, the sent Message is
      * returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param float $latitude
      *        Latitude of the venue
@@ -786,6 +855,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendVenue(
+        $chatId,
         $latitude,
         $longitude,
         $title,
@@ -801,9 +871,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendcontact
      *
      * Use this method to send phone contacts. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param string $phoneNumber
      *        Contact's phone number
@@ -830,6 +903,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendContact(
+        $chatId,
         $phoneNumber,
         $firstName,
         $lastName = null,
@@ -843,9 +917,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendpoll
      *
      * Use this method to send a native poll. A native poll can't be sent to a private chat. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername). A
+     * native poll can't be sent to a private chat.
      *
      * @param string $question
      *        Poll question, 1-255 characters
@@ -866,6 +944,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendPoll(
+        $chatId,
         $question,
         array $options,
         $disableNotification = null,
@@ -877,7 +956,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendchataction
      *
      * We only recommend using this method when a response from the bot will take a noticeable amount of
      * time to arrive.  Example: The ImageBot needs some time to process a request
@@ -886,6 +965,9 @@ class Client implements ClientInterface
      * will see a “sending photo” status for the bot.  Use this method when you need to tell the user that something is
      * happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear
      * its typing status). Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param string $action
      *        Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text
@@ -896,6 +978,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendChatAction(
+        $chatId,
         $action
     )
     {
@@ -903,9 +986,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getuserprofilephotos
      *
      * Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
+     *
+     * @param int $userId
+     *        Unique identifier of the target user
      *
      * @param int $offset
      *        Sequential number of the first photo to be returned. By default, all photos are returned.
@@ -916,6 +1002,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function getUserProfilePhotos(
+        $userId,
         $offset = null,
         $limit = null
     )
@@ -924,7 +1011,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getfile
      *
      * Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files
      * of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the
@@ -932,21 +1019,30 @@ class Client implements ClientInterface
      * &lt;file_path&gt; is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new
      * one can be requested by calling getFile again.
      *
+     * @param string $fileId
+     *        File identifier to get info about
+     *
      * @return ResponseInterface
      */
-    public function getFile()
+    public function getFile(
+        $fileId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#kickchatmember
      *
      *  Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’
      * setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added
      * them.  Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user
      * will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
      * Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target group or username of the target supergroup or channel (in the format
+     * @channelusername)
      *
      * @param int $userId
      *        Unique identifier of the target user
@@ -958,6 +1054,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function kickChatMember(
+        $chatId,
         $userId,
         $untilDate = null
     )
@@ -966,11 +1063,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#unbanchatmember
      *
      * Use this method to unban a previously kicked user in a supergroup or channel. The user will not
      * return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this
      * to work. Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target group or username of the target supergroup or channel (in the format
+     * @username)
      *
      * @param int $userId
      *        Unique identifier of the target user
@@ -978,6 +1079,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function unbanChatMember(
+        $chatId,
         $userId
     )
     {
@@ -985,11 +1087,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#restrictchatmember
      *
      * Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work
      * and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a
      * user. Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup (in the format
+     * @supergroupusername)
      *
      * @param int $userId
      *        Unique identifier of the target user
@@ -1015,6 +1121,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function restrictChatMember(
+        $chatId,
         $userId,
         $untilDate = null,
         $canSendMessages = null,
@@ -1027,11 +1134,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#promotechatmember
      *
      * Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for
      * this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user.
      * Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param int $userId
      *        Unique identifier of the target user
@@ -1064,6 +1174,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function promoteChatMember(
+        $chatId,
         $userId,
         $canChangeInfo = null,
         $canPostMessages = null,
@@ -1079,26 +1190,34 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#exportchatinvitelink
      *
      * Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an
      * administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as
      * String on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function exportChatInviteLink()
+    public function exportChatInviteLink(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setchatphoto
      *
      *  Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’
      * setting is off in the target group.  Use this method to set a new profile photo for the chat. Photos can't be changed for
      * private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
      * Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface $photo
      *        New chat photo, uploaded using multipart/form-data
@@ -1106,6 +1225,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setChatPhoto(
+        $chatId,
         Type\InputFileInterface $photo
     )
     {
@@ -1113,27 +1233,35 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#deletechatphoto
      *
      *  Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’
      * setting is off in the target group.  Use this method to delete a chat photo. Photos can't be changed for private chats. The
      * bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns
      * True on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function deleteChatPhoto()
+    public function deleteChatPhoto(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setchattitle
      *
      *  Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’
      * setting is off in the target group.  Use this method to change the title of a chat. Titles can't be changed for private
      * chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns
      * True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param string $title
      *        New chat title, 1-255 characters
@@ -1141,6 +1269,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setChatTitle(
+        $chatId,
         $title
     )
     {
@@ -1148,10 +1277,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setchatdescription
      *
      * Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for
      * this to work and must have the appropriate admin rights. Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param string $description
      *        New chat description, 0-255 characters
@@ -1159,6 +1291,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setChatDescription(
+        $chatId,
         $description = null
     )
     {
@@ -1166,11 +1299,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#pinchatmessage
      *
      * Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for
      * this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin
      * right in the channel. Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Identifier of a message to pin
@@ -1182,6 +1318,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function pinChatMessage(
+        $chatId,
         $messageId,
         $disableNotification = null
     )
@@ -1190,74 +1327,107 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#unpinchatmessage
      *
      * Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat
      * for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’
      * admin right in the channel. Returns True on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function unpinChatMessage()
+    public function unpinChatMessage(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#leavechat
      *
      * Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup or channel (in the format
+     * @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function leaveChat()
+    public function leaveChat(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getchat
      *
      * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations,
      * current username of a user, group or channel, etc.). Returns a Chat object on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup or channel (in the format
+     * @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function getChat()
+    public function getChat(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getchatadministrators
      *
      * Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a
      * supergroup and no administrators were appointed, only the creator will be returned.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup or channel (in the format
+     * @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function getChatAdministrators()
+    public function getChatAdministrators(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getchatmemberscount
      *
      * Use this method to get the number of members in a chat. Returns Int on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup or channel (in the format
+     * @channelusername)
+     *
      * @return ResponseInterface
      */
-    public function getChatMembersCount()
+    public function getChatMembersCount(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getchatmember
      *
      * Use this method to get information about a member of a chat. Returns a ChatMember object
      * on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup or channel (in the format
+     * @channelusername)
      *
      * @param int $userId
      *        Unique identifier of the target user
@@ -1265,6 +1435,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function getChatMember(
+        $chatId,
         $userId
     )
     {
@@ -1272,10 +1443,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setchatstickerset
      *
      * Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to
      * work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup (in the format
+     * @supergroupusername)
      *
      * @param string $stickerSetName
      *        Name of the sticker set to be set as the group sticker set
@@ -1283,6 +1458,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setChatStickerSet(
+        $chatId,
         $stickerSetName
     )
     {
@@ -1290,20 +1466,26 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#deletechatstickerset
      *
      * Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to
      * work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target supergroup (in the format
+     * @supergroupusername)
+     *
      * @return ResponseInterface
      */
-    public function deleteChatStickerSet()
+    public function deleteChatStickerSet(
+        $chatId
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#answercallbackquery
      *
      *  Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first
      * create a game for your bot via @Botfather and accept the terms. Otherwise, you may
@@ -1311,6 +1493,9 @@ class Client implements ClientInterface
      * send answers to callback queries sent from inline
      * keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success,
      * True is returned.
+     *
+     * @param string $callbackQueryId
+     *        Unique identifier for the query to be answered
      *
      * @param string $text
      *        Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
@@ -1331,6 +1516,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function answerCallbackQuery(
+        $callbackQueryId,
         $text = null,
         $showAlert = null,
         $url = null,
@@ -1341,10 +1527,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#editmessagetext
      *
      * Use this method to edit text and game messages. On success, if edited message is sent by the
      * bot, the edited Message is returned, otherwise True is returned.
+     *
+     * @param int|string $chatId
+     *        Required if inline_message_id is not specified. Unique identifier for the target chat or username of the
+     * target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Required if inline_message_id is not specified. Identifier of the message to edit
@@ -1368,6 +1558,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function editMessageText(
+        $chatId,
         $messageId,
         $inlineMessageId,
         $text,
@@ -1380,9 +1571,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#editmessagecaption
      *
      * Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+     *
+     * @param int|string $chatId
+     *        Required if inline_message_id is not specified. Unique identifier for the target chat or username of the
+     * target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Required if inline_message_id is not specified. Identifier of the message to edit
@@ -1403,6 +1598,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function editMessageCaption(
+        $chatId,
         $messageId,
         $inlineMessageId,
         $caption = null,
@@ -1414,13 +1610,17 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#editmessagemedia
      *
      * Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message
      * album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline
      * message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if
      * the edited message was sent by the bot, the edited Message is returned, otherwise
      * True is returned.
+     *
+     * @param int|string $chatId
+     *        Required if inline_message_id is not specified. Unique identifier for the target chat or username of the
+     * target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Required if inline_message_id is not specified. Identifier of the message to edit
@@ -1437,6 +1637,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function editMessageMedia(
+        $chatId,
         $messageId,
         $inlineMessageId,
         Type\InputMedia $media,
@@ -1447,10 +1648,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#editmessagereplymarkup
      *
      * Use this method to edit only the reply markup of messages. On success, if edited message is sent by the bot, the edited
      * Message is returned, otherwise True is returned.
+     *
+     * @param int|string $chatId
+     *        Required if inline_message_id is not specified. Unique identifier for the target chat or username of the
+     * target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Required if inline_message_id is not specified. Identifier of the message to edit
@@ -1464,6 +1669,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function editMessageReplyMarkup(
+        $chatId,
         $messageId,
         $inlineMessageId,
         Type\InlineKeyboardMarkup $replyMarkup = null
@@ -1473,10 +1679,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#stoppoll
      *
      * Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
      * final results is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param int $messageId
      *        Identifier of the original message with the poll
@@ -1487,6 +1696,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function stopPoll(
+        $chatId,
         $messageId,
         Type\InlineKeyboardMarkup $replyMarkup = null
     )
@@ -1495,7 +1705,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#deletemessage
      *
      * Use this method to delete a message, including service messages, with the following limitations:- A message
      * can only be deleted if it was sent less than 48 hours ago.- Bots can delete outgoing messages in private chats,
@@ -1504,12 +1714,16 @@ class Client implements ClientInterface
      * any message there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can
      * delete any message there.Returns True on success.
      *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+     *
      * @param int $messageId
      *        Identifier of the message to delete
      *
      * @return ResponseInterface
      */
     public function deleteMessage(
+        $chatId,
         $messageId
     )
     {
@@ -1517,9 +1731,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendsticker
      *
      * Use this method to send .webp stickers. On success, the sent Message is returned.
+     *
+     * @param int|string $chatId
+     *        Unique identifier for the target chat or username of the target channel (in the format @channelusername)
      *
      * @param Type\InputFileInterface|string $sticker
      *        Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass
@@ -1539,6 +1756,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendSticker(
+        $chatId,
         $sticker,
         $disableNotification = null,
         $replyToMessageId = null,
@@ -1549,22 +1767,30 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getstickerset
      *
      * Use this method to get a sticker set. On success, a StickerSet object is returned.
      *
+     * @param string $name
+     *        Name of the sticker set
+     *
      * @return ResponseInterface
      */
-    public function getStickerSet()
+    public function getStickerSet(
+        $name
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#uploadstickerfile
      *
      * Use this method to upload a .png file with a sticker for later use in createNewStickerSet and
      * addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+     *
+     * @param int $userId
+     *        User identifier of sticker file owner
      *
      * @param Type\InputFileInterface $pngSticker
      *        Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either
@@ -1573,6 +1799,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function uploadStickerFile(
+        $userId,
         Type\InputFileInterface $pngSticker
     )
     {
@@ -1580,10 +1807,13 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#createnewstickerset
      *
      * Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns
      * True on success.
+     *
+     * @param int $userId
+     *        User identifier of created sticker set owner
      *
      * @param string $name
      *        Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english
@@ -1611,6 +1841,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function createNewStickerSet(
+        $userId,
         $name,
         $title,
         $pngSticker,
@@ -1623,9 +1854,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#addstickertoset
      *
      * Use this method to add a new sticker to a set created by the bot. Returns True on success.
+     *
+     * @param int $userId
+     *        User identifier of sticker set owner
      *
      * @param string $name
      *        Sticker set name
@@ -1645,6 +1879,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function addStickerToSet(
+        $userId,
         $name,
         $pngSticker,
         $emojis,
@@ -1655,9 +1890,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setstickerpositioninset
      *
      * Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+     *
+     * @param string $sticker
+     *        File identifier of the sticker
      *
      * @param int $position
      *        New sticker position in the set, zero-based
@@ -1665,6 +1903,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setStickerPositionInSet(
+        $sticker,
         $position
     )
     {
@@ -1672,22 +1911,30 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#deletestickerfromset
      *
      * Use this method to delete a sticker from a set created by the bot. Returns True on success.
      *
+     * @param string $sticker
+     *        File identifier of the sticker
+     *
      * @return ResponseInterface
      */
-    public function deleteStickerFromSet()
+    public function deleteStickerFromSet(
+        $sticker
+    )
     {
         return $this->callMethod(__FUNCTION__, func_get_args());
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#answerinlinequery
      *
      * Use this method to send answers to an inline query. On success, True is returned.No more than
      * 50 results per query are allowed.
+     *
+     * @param string $inlineQueryId
+     *        Unique identifier for the answered query
      *
      * @param Type\AbstractInlineQueryResult[]|array $results
      *        A JSON-serialized array of results for the inline query
@@ -1720,6 +1967,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function answerInlineQuery(
+        $inlineQueryId,
         array $results,
         $cacheTime = null,
         $isPersonal = null,
@@ -1732,12 +1980,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendinvoice
      *
      * Use this method to send invoices. On success, the sent Message is returned.
      *
-     * @param string $title
-     *        Product name, 1-32 characters
+     * @param int $chatId
+     *        Unique identifier for the target private chat
+     *
+     * @param string $description
+     *        Product description, 1-255 characters
      *
      * @param string $payload
      *        Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal
@@ -1756,8 +2007,8 @@ class Client implements ClientInterface
      *        Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus,
      * etc.)
      *
-     * @param string $description
-     *        Product description, 1-255 characters
+     * @param string $title
+     *        Product name, 1-32 characters
      *
      * @param bool $needShippingAddress
      *        Pass True, if you require the user's shipping address to complete the order
@@ -1777,8 +2028,8 @@ class Client implements ClientInterface
      * @param bool $sendPhoneNumberToProvider
      *        Pass True, if user's phone number should be sent to provider
      *
-     * @param int $photoHeight
-     *        Photo height
+     * @param int $photoWidth
+     *        Photo width
      *
      * @param bool $needEmail
      *        Pass True, if you require the user's email address to complete the order
@@ -1789,8 +2040,8 @@ class Client implements ClientInterface
      * @param bool $needName
      *        Pass True, if you require the user's full name to complete the order
      *
-     * @param int $photoWidth
-     *        Photo width
+     * @param int $photoHeight
+     *        Photo height
      *
      * @param int $photoSize
      *        Photo size
@@ -1810,24 +2061,25 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendInvoice(
-        $title,
+        $chatId,
+        $description,
         $payload,
         $providerToken,
         $startParameter,
         $currency,
         array $prices,
-        $description,
+        $title,
         $needShippingAddress = null,
         $replyToMessageId = null,
         $disableNotification = null,
         $isFlexible = null,
         $sendEmailToProvider = null,
         $sendPhoneNumberToProvider = null,
-        $photoHeight = null,
+        $photoWidth = null,
         $needEmail = null,
         $needPhoneNumber = null,
         $needName = null,
-        $photoWidth = null,
+        $photoHeight = null,
         $photoSize = null,
         $photoUrl = null,
         $providerData = null,
@@ -1838,11 +2090,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#answershippingquery
      *
      * If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot
      * API will send an Update with a shipping_query field to the bot. Use this method to
      * reply to shipping queries. On success, True is returned.
+     *
+     * @param string $shippingQueryId
+     *        Unique identifier for the query to be answered
      *
      * @param bool $ok
      *        Specify True if delivery to the specified address is possible and False if there are any problems (for example,
@@ -1859,6 +2114,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function answerShippingQuery(
+        $shippingQueryId,
         $ok,
         array $shippingOptions,
         $errorMessage
@@ -1868,12 +2124,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#answerprecheckoutquery
      *
      * Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form
      * of an Update with the field pre_checkout_query. Use this method to respond to such
      * pre-checkout queries. On success, True is returned. Note: The Bot API must receive an answer within 10 seconds
      * after the pre-checkout query was sent.
+     *
+     * @param string $preCheckoutQueryId
+     *        Unique identifier for the query to be answered
      *
      * @param bool $ok
      *        Specify True if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order.
@@ -1888,6 +2147,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function answerPreCheckoutQuery(
+        $preCheckoutQueryId,
         $ok,
         $errorMessage
     )
@@ -1896,7 +2156,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setpassportdataerrors
      *
      * Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For
      * example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply
@@ -1905,12 +2165,16 @@ class Client implements ClientInterface
      * the errors are fixed (the contents of the field for which you returned the error must change). Returns True on
      * success.
      *
+     * @param int $userId
+     *        User identifier
+     *
      * @param Type\PassportElementError[]|array $errors
      *        A JSON-serialized array describing the errors
      *
      * @return ResponseInterface
      */
     public function setPassportDataErrors(
+        $userId,
         array $errors
     )
     {
@@ -1918,9 +2182,12 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#sendgame
      *
      * Use this method to send a game. On success, the sent Message is returned.
+     *
+     * @param int $chatId
+     *        Unique identifier for the target chat
      *
      * @param string $gameShortName
      *        Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
@@ -1938,6 +2205,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function sendGame(
+        $chatId,
         $gameShortName,
         $disableNotification = null,
         $replyToMessageId = null,
@@ -1948,11 +2216,14 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#setgamescore
      *
      * Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns
      * the edited Message, otherwise returns True. Returns an error, if the new score is
      * not greater than the user's current score in the chat and force is False.
+     *
+     * @param int $userId
+     *        User identifier
      *
      * @param int $score
      *        New score, must be non-negative
@@ -1975,6 +2246,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function setGameScore(
+        $userId,
         $score,
         $chatId,
         $messageId,
@@ -1987,13 +2259,16 @@ class Client implements ClientInterface
     }
 
     /**
-     * https://core.telegram.org/bots/api#setwebhook
+     * https://core.telegram.org/bots/api#getgamehighscores
      *
      *  This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will
      * also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject
      * to change.  Use this method to get data for high score tables. Will return the score of the specified user and several
      * of his neighbors in a game. On success, returns an Array of GameHighScore
      * objects.
+     *
+     * @param int $userId
+     *        Target user id
      *
      * @param int $chatId
      *        Required if inline_message_id is not specified. Unique identifier for the target chat
@@ -2007,6 +2282,7 @@ class Client implements ClientInterface
      * @return ResponseInterface
      */
     public function getGameHighScores(
+        $userId,
         $chatId,
         $messageId,
         $inlineMessageId
